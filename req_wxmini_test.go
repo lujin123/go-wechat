@@ -19,7 +19,7 @@ func init() {
 		SignType:  "",
 		TradeType: "",
 	}
-	miniService = NewWxMini(&cfg, NewCtxHttp())
+	miniService = NewWxMiniService(&cfg, NewCtxHttp())
 }
 
 func TestWxMini_ReqAccessToken(t *testing.T) {

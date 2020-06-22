@@ -85,7 +85,7 @@ type wxMini struct {
 	wxService
 }
 
-func NewWxMini(cfg *MiniConfig, client Http) *wxMini {
+func NewWxMiniService(cfg *MiniConfig, client Http) *wxMini {
 	s := &wxMini{
 		cfg: cfg,
 		wxService: wxService{

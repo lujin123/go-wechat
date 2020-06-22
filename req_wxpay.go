@@ -190,7 +190,7 @@ type wxPay struct {
 	wxService
 }
 
-func NewWxPay(cfg *PayConfig, client Http) *wxPay {
+func NewWxPayService(cfg *PayConfig, client Http) *wxPay {
 	s := &wxPay{
 		cfg,
 		wxService{

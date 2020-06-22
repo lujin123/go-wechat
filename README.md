@@ -43,10 +43,14 @@
 
 ### 初始化
 
-目前是有三个对象去分别处理微信小程序服务端接口、需要证书支付接口和无需证书支付接口，
+目前是有三个对象去分别处理微信小程序服务端接口、需要证书支付接口和无需证书支付接口
 
-初始化方法也都类似，举个🌰：
+接口中使用的`http`服务是自己封装的一个带`context`的`http`，这样更加的灵活和方便
 
+日志组件使用的是`uber`的`zap`库，这个库功能很强大，个人很喜欢，就直接用了。这样子会直接引入一个依赖，也许应该写一个接口去做，方便适配，
+但是如果要将参数像`zap`那样序列化还挺麻烦，暂时就算了
+
+#### 微信小程序
 ```go
 package myapp
 
@@ -61,8 +65,52 @@ func init() {
         SignType:  "",
         TradeType: "",
     }
-    miniService := wechat.NewWxMini(&cfg, wechat.NewCtxHttp())
-    //其他的都是类似的方式，先初始化配置文件，然后new一个对象就行了
+    miniService := wechat.NewWxMiniService(&cfg, wechat.NewCtxHttp())
+    //调用需要的方法
+}
+```
+
+#### 微信无需证书支付
+```go
+package myapp
+
+import (
+    "github.com/lujin123/wechat"
+)
+
+func init() {
+    cfg := wechat.PayConfig{
+        AppId:"",
+        MchId:"",
+        ApiKey:"",
+        SignType:"",
+        TradeType:"",
+    }
+    payService := wechat.NewWxPayService(&cfg, wechat.NewCtxHttp())
+    //调用需要的方法
+}
+```
+
+#### 微信需证书支付
+```go
+package myapp
+
+import (
+    "github.com/lujin123/wechat"
+)
+
+func init() { 
+    //这个服务初始化的时候需要传入微信商户后天的证书，用于生成一个带证书的客户端
+    cfg := wechat.MchConfig{
+        AppId:"",
+        MchId:"",
+        ApiKey:"",
+        CaCertFile:"",
+        ApiCertFile:"",
+        ApiKeyFile:"",
+    }
+    mchService := wechat.NewWxMchService(&cfg)
+    //调用需要的方法
 }
 ```
 

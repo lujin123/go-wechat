@@ -14,7 +14,7 @@ func init() {
 		SignType:  "",
 		TradeType: "",
 	}
-	payService = NewWxPay(&cfg, NewCtxHttp())
+	payService = NewWxPayService(&cfg, NewCtxHttp())
 }
 
 func TestWxPay_GenPrepay(t *testing.T) {
