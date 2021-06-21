@@ -145,8 +145,8 @@ func NewWxMchService(cfg *MchConfig) *wxMch {
 	return s
 }
 
-//企业付款到零钱接口
-//接口文档：https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2
+// 企业付款到零钱接口
+// 接口文档：https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_2
 func (w wxMch) ReqWxToMchPay(ctx context.Context, req *MchPayReq) (*MchPayResp, error) {
 	sign, err := w.sign(ctx, &req)
 	if err != nil {
@@ -167,8 +167,8 @@ func (w wxMch) ReqWxToMchPay(ctx context.Context, req *MchPayReq) (*MchPayResp, 
 	return &resp, nil
 }
 
-//企业付款到零钱查询接口
-//接口文档：https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_3
+// 企业付款到零钱查询接口
+// 接口文档：https://pay.weixin.qq.com/wiki/doc/api/tools/mch_pay.php?chapter=14_3
 func (w wxMch) ReqMchPayment(ctx context.Context, tradeNo string) (*MchPaymentQueryResp, error) {
 	req := mchPaymentQueryReq{
 		MchAppID:       w.cfg.AppId,
@@ -196,8 +196,8 @@ func (w wxMch) ReqMchPayment(ctx context.Context, tradeNo string) (*MchPaymentQu
 	return &resp, nil
 }
 
-//申请退款接口
-//接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4
+// 申请退款接口
+// 接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_4
 func (w wxMch) ReqPayRefund(ctx context.Context, req *MchPayRefundReq) (*MchPayRefundResp, error) {
 	sign, err := w.sign(ctx, &req)
 	if err != nil {

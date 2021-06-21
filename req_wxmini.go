@@ -21,7 +21,7 @@ const (
 )
 
 var (
-	ErrTokenMissing = errors.New("token missing")
+	ErrTokenMissing = errors.New("[gowechat] token missing")
 )
 
 type MiniService interface {
@@ -119,8 +119,8 @@ func (w wxMini) ReqCode2Session(ctx context.Context, jsCode string) (*SessionRes
 	return &sessionResp, nil
 }
 
-//获取小程序全局唯一后台接口调用凭据（access_token）
-//接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html
+// 获取小程序全局唯一后台接口调用凭据（access_token）
+// 接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/access-token/auth.getAccessToken.html
 func (w wxMini) ReqAccessToken(ctx context.Context) (*AccessTokenResp, error) {
 	url := fmt.Sprintf("%s?grant_type=client_credential&appid=%s&secret=%s", accessTokenUrl, w.cfg.AppId, w.cfg.AppSecret)
 	var resp AccessTokenResp
@@ -136,8 +136,8 @@ func (w wxMini) ReqAccessToken(ctx context.Context) (*AccessTokenResp, error) {
 	return &resp, nil
 }
 
-//发送订阅消息
-//接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html
+// 发送订阅消息
+// 接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/subscribe-message/subscribeMessage.send.html
 func (w wxMini) SendSubscribeMessage(ctx context.Context, req *SubscribeMessageReq) (*ErrorResp, error) {
 	if err := w.checkToken(); err != nil {
 		return nil, err
@@ -156,8 +156,8 @@ func (w wxMini) SendSubscribeMessage(ctx context.Context, req *SubscribeMessageR
 	return &resp, nil
 }
 
-//获取小程序码，适用于需要的码数量极多的业务场景。通过该接口生成的小程序码，永久有效，数量暂无限制
-//接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html
+// 获取小程序码，适用于需要的码数量极多的业务场景。通过该接口生成的小程序码，永久有效，数量暂无限制
+// 接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html
 func (w wxMini) ReqWxCodeUnlimited(ctx context.Context, req *WxCodeUnlimitedReq) ([]byte, error) {
 	if err := w.checkToken(); err != nil {
 		return nil, err
@@ -174,10 +174,9 @@ func (w wxMini) ReqWxCodeUnlimited(ctx context.Context, req *WxCodeUnlimitedReq)
 			return err
 		}
 
-		//检查是否为异常
+		// 检查是否为异常
 		var resp ErrorResp
-		//如果无法解析，就认为是二维码，能解析出来就是异常结果
-		//撒币微信，数据结构搞成一样的会死？
+		// 如果无法解析，就认为是二维码，能解析出来就是异常结果
 		if err := json.Unmarshal(buff, &resp); err != nil {
 			return nil
 		}
@@ -188,8 +187,8 @@ func (w wxMini) ReqWxCodeUnlimited(ctx context.Context, req *WxCodeUnlimitedReq)
 	return buff, nil
 }
 
-//校验一张图片是否含有违法违规内容。
-//接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/sec-check/security.imgSecCheck.html
+// 校验一张图片是否含有违法违规内容
+// 接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/sec-check/security.imgSecCheck.html
 func (w wxMini) CheckImage(ctx context.Context, media []byte) (*ErrorResp, error) {
 	if err := w.checkToken(); err != nil {
 		return nil, err
@@ -215,8 +214,8 @@ func (w wxMini) CheckImage(ctx context.Context, media []byte) (*ErrorResp, error
 	return &resp, nil
 }
 
-//检查一段文本是否含有违法违规内容。
-//接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/sec-check/security.msgSecCheck.html
+// 检查一段文本是否含有违法违规内容
+// 接口文档：https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/sec-check/security.msgSecCheck.html
 func (w wxMini) CheckMessage(ctx context.Context, msg string) (*ErrorResp, error) {
 	if err := w.checkToken(); err != nil {
 		return nil, err

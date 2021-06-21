@@ -17,12 +17,12 @@ const (
 )
 
 type PayService interface {
-	//req function
+	// req function
 	ReqUnifiedOrder(ctx context.Context, req *UnifiedOrderReq) (*UnifiedOrderResp, error)
 	ReqQueryOrder(ctx context.Context, tradeNo string) (*QueryOrderResp, error)
 	ReqCloseOrder(ctx context.Context, tradeNo string) (*CloseOrderResp, error)
 
-	//utils function
+	// utils function
 	GenPrepay(ctx context.Context, prepayId, nonceStr string) (*PrepayReturn, error)
 	VerifySign(ctx context.Context, req *NotifyReq) bool
 }
@@ -203,8 +203,8 @@ func NewWxPayService(cfg *PayConfig, client Http) *wxPay {
 	return s
 }
 
-//统一下单接口
-//接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1
+// 统一下单接口
+// 接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_1
 func (w wxPay) ReqUnifiedOrder(ctx context.Context, req *UnifiedOrderReq) (*UnifiedOrderResp, error) {
 	var resp UnifiedOrderResp
 	if err := w.PostXML(ctx, unifiedOrderUrl, &req, func(response *http.Response, err error) error {
@@ -219,8 +219,8 @@ func (w wxPay) ReqUnifiedOrder(ctx context.Context, req *UnifiedOrderReq) (*Unif
 	return &resp, nil
 }
 
-//订单查询接口
-//接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_2
+// 订单查询接口
+// 接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_2
 func (w wxPay) ReqQueryOrder(ctx context.Context, tradeNo string) (*QueryOrderResp, error) {
 	req := QueryOrderReq{
 		AppID:      w.cfg.AppId,
@@ -250,7 +250,7 @@ func (w wxPay) ReqQueryOrder(ctx context.Context, tradeNo string) (*QueryOrderRe
 
 // 关闭订单
 // 以下情况需要调用关单接口：商户订单支付失败需要生成新单号重新发起支付，要对原订单号调用关单，避免重复支付；系统下单后，用户支付超时，系统退出不再受理，避免用户继续，请调用关单接口。
-//接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_3
+// 接口文档：https://pay.weixin.qq.com/wiki/doc/api/jsapi.php?chapter=9_3
 func (w wxPay) ReqCloseOrder(ctx context.Context, tradeNo string) (*CloseOrderResp, error) {
 	req := CloseOrderReq{
 		AppId:      w.cfg.AppId,
@@ -279,7 +279,7 @@ func (w wxPay) ReqCloseOrder(ctx context.Context, tradeNo string) (*CloseOrderRe
 	return &resp, nil
 }
 
-//生成小程序预支付数据
+// 生成小程序预支付数据
 func (w wxPay) GenPrepay(ctx context.Context, prepayId, nonceStr string) (*PrepayReturn, error) {
 	if nonceStr == "" {
 		nonceStr = w.RandString(32)
@@ -300,7 +300,7 @@ func (w wxPay) GenPrepay(ctx context.Context, prepayId, nonceStr string) (*Prepa
 	return &prepay, nil
 }
 
-//校验签名
+// 校验签名
 func (w wxPay) VerifySign(ctx context.Context, req *NotifyReq) bool {
 	oldSign := req.Sign
 	req.Sign = ""
